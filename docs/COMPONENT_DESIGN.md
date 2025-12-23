@@ -74,7 +74,8 @@ from dotenv import load_dotenv
 @dataclass
 class ServerConfig:
     """Server configuration settings."""
-    gemini_api_key: str
+    gemini_api_key: Optional[str]
+    cliproxy_base_url: Optional[str] = None
     server_name: str = "nanobanana-mcp-server"
     transport: str = "stdio"  # stdio or http
     host: str = "127.0.0.1"
@@ -88,11 +89,13 @@ class ServerConfig:
         load_dotenv()
         
         api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
-        if not api_key:
-            raise ValueError("GEMINI_API_KEY or GOOGLE_API_KEY must be set")
+        cliproxy_base_url = os.getenv("CLIPROXY_BASE_URL")
+        if not (api_key or cliproxy_base_url):
+            raise ValueError("GEMINI_API_KEY/GOOGLE_API_KEY or CLIPROXY_BASE_URL must be set")
         
         return cls(
             gemini_api_key=api_key,
+            cliproxy_base_url=cliproxy_base_url,
             transport=os.getenv("FASTMCP_TRANSPORT", "stdio"),
             host=os.getenv("FASTMCP_HOST", "127.0.0.1"),
             port=int(os.getenv("FASTMCP_PORT", "9000")),
@@ -142,7 +145,7 @@ class NanoBananaMCP:
         """Get server description and instructions."""
         return (
             "This server exposes image generation & editing powered by "
-            "Gemini 2.5 Flash Image (aka 'nano banana'). It returns images "
+            "Gemini image models (Flash/Pro). It returns images "
             "as real MCP image content blocks, and also provides structured "
             "JSON with metadata and reproducibility hints."
         )
@@ -428,7 +431,7 @@ def register_generate_image_tool(server: FastMCP):
     
     @server.tool(
         annotations={
-            "title": "Generate image (Gemini 2.5 Flash Image)",
+            "title": "Generate image (Gemini image models)",
             "readOnlyHint": True,
             "openWorldHint": True,
         }
@@ -494,7 +497,7 @@ def register_generate_image_tool(server: FastMCP):
             
             # Create response
             summary = (
-                f"Generated {len(mcp_images)} image(s) with Gemini 2.5 Flash Image from your prompt."
+                f"Generated {len(mcp_images)} image(s) with Gemini image models from your prompt."
             )
             if input_images:
                 summary += " Included edits/conditioning from provided image(s)."

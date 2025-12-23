@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Nano Banana MCP Server is a production-ready FastMCP server that provides AI-powered image generation and editing capabilities through Google's Gemini 2.5 Flash Image model. It implements the Model Context Protocol (MCP) to enable seamless integration with AI development tools like Claude Desktop, Cursor, and VS Code.
+The Nano Banana MCP Server is a production-ready FastMCP server that provides AI-powered image generation and editing capabilities through Google's Gemini models, with optional CLIProxyAPI backend support. It implements the Model Context Protocol (MCP) to enable seamless integration with AI development tools like Claude Desktop, Cursor, and VS Code.
 
 ## System Architecture
 
@@ -35,8 +35,8 @@ graph TB
     end
     
     subgraph "External Services"
-        O[Gemini 2.5 Flash Image API]
-        P[Gemini Files API]
+        O[Gemini API / CLIProxyAPI]
+        P[Gemini Files API (direct only)]
     end
     
     subgraph "Data Layer"
@@ -96,7 +96,7 @@ graph TB
 
 **Data Flow**:
 ```
-Prompt → Gemini API → Image Bytes → MCP Image Blocks → Client
+Prompt → Gemini API / CLIProxyAPI → Image Bytes → MCP Image Blocks → Client
 ```
 
 ### 3. Image Editing Service
@@ -118,6 +118,7 @@ Prompt → Gemini API → Image Bytes → MCP Image Blocks → Client
   - Large file handling (>20MB)
   - File metadata introspection
   - Reusable asset management
+  - Disabled when running in CLIProxyAPI mode
   - URI-based file referencing
 
 ### 5. Template Engine
@@ -193,7 +194,7 @@ graph LR
 - **No Persistent Storage**: Images processed in-memory only
 - **SynthID Tracking**: Watermark metadata for provenance
 - **Secure Transmission**: Binary data handled through MCP protocol
-- **API Rate Limits**: Inherited from Gemini API constraints
+- **API Rate Limits**: Inherited from Gemini API or CLIProxyAPI constraints
 
 ## Performance Characteristics
 
@@ -225,10 +226,14 @@ graph LR
 ### Environment Variables
 
 ```bash
-# Required
+# Required (choose one)
 GEMINI_API_KEY=your_gemini_api_key
 # or
 GOOGLE_API_KEY=your_google_api_key
+# or
+CLIPROXY_BASE_URL=http://127.0.0.1:8318
+# CLIPROXY_API_KEY=sk-your-cli-proxy-key
+# CLIPROXY_CONFIG=/path/to/cliproxyapi/config.yaml
 
 # Optional
 FASTMCP_TRANSPORT=stdio|http
@@ -253,7 +258,7 @@ mcp = FastMCP(
 
 ```mermaid
 graph LR
-    A[IDE/Editor] <--> B[STDIO Transport] <--> C[FastMCP Server] --> D[Gemini API]
+    A[IDE/Editor] <--> B[STDIO Transport] <--> C[FastMCP Server] --> D[Gemini API / CLIProxyAPI]
 ```
 
 **Setup**:
@@ -301,7 +306,7 @@ graph TB
     A --> C[FastMCP Instance 2]
     A --> D[FastMCP Instance N]
     
-    B --> E[Gemini API]
+    B --> E[Gemini API / CLIProxyAPI]
     C --> E
     D --> E
     
@@ -332,7 +337,7 @@ pm2 start "uv run python server.py" --name nanobanana-mcp-server
 ### Error Categories
 
 1. **Configuration Errors**: Missing API keys, invalid settings
-2. **API Errors**: Gemini service failures, rate limits
+2. **API Errors**: Gemini/CLIProxy service failures, rate limits
 3. **Validation Errors**: Invalid parameters, malformed requests
 4. **Runtime Errors**: Memory issues, network failures
 
@@ -359,7 +364,7 @@ def handle_gemini_error(error):
 - Error handling paths
 
 **Integration Tests**:
-- Gemini API interaction
+- Gemini API or CLIProxyAPI interaction
 - File upload/download cycles
 - MCP protocol compliance
 - Transport layer functionality

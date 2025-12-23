@@ -14,7 +14,7 @@ This document defines the complete API specification for the Nano Banana MCP Ser
 
 ## Authentication
 
-The server requires a valid Gemini API key configured through environment variables:
+The server supports multiple authentication paths:
 
 ```bash
 GEMINI_API_KEY=your_api_key
@@ -22,11 +22,23 @@ GEMINI_API_KEY=your_api_key
 GOOGLE_API_KEY=your_api_key
 ```
 
+**CLIProxyAPI mode (optional)**:
+
+```bash
+CLIPROXY_BASE_URL=http://127.0.0.1:8318
+CLIPROXY_API_KEY=sk-your-cli-proxy-key
+# or
+CLIPROXY_CONFIG=/path/to/cliproxyapi/config.yaml
+```
+
+When `CLIPROXY_BASE_URL` is set, the server routes Gemini calls through CLIProxyAPI
+and the Gemini Files API is disabled.
+
 ## Tools
 
 ### 1. generate_image
 
-**Purpose**: Generate one or more images using Gemini 2.5 Flash Image model.
+**Purpose**: Generate one or more images using Gemini image models (Flash/Pro).
 
 **Signature**:
 ```python

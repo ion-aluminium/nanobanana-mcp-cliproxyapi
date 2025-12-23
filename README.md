@@ -1,6 +1,10 @@
-# Nano Banana MCP Server 🍌
+# Nano Banana MCP Server (CLIProxyAPI Edition) 🍌
 
 A production-ready **Model Context Protocol (MCP)** server that provides AI-powered image generation capabilities through Google's **Gemini** models with intelligent model selection.
+
+> Fork notice: This repository is a fork of `zhongweili/nanobanana-mcp-server`.
+> It adds **CLIProxyAPI** backend support (Gemini-compatible proxy) while keeping
+> the same MCP tools and MIT license.
 
 ## ⭐ NEW: Gemini 3 Pro Image Support! 🚀
 
@@ -12,6 +16,7 @@ Now featuring **Nano Banana Pro** - Google's latest and most powerful image gene
 - 🎯 **Superior Text Rendering**: Crystal-clear text in images at high resolution
 - 🎨 **Enhanced Understanding**: Better context comprehension for complex prompts
 
+Upstream MCP registry listing:
 <a href="https://glama.ai/mcp/servers/@zhongweili/nanobanana-mcp-server">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@zhongweili/nanobanana-mcp-server/badge" alt="nanobanana-mcp-server MCP server" />
 </a>
@@ -33,37 +38,42 @@ Now featuring **Nano Banana Pro** - Google's latest and most powerful image gene
 
 ### Prerequisites
 
-1. **Google Gemini API Key** - [Get one free here](https://makersuite.google.com/app/apikey)
+1. **One of the following**:
+   - **Google Gemini API Key** - [Get one free here](https://makersuite.google.com/app/apikey)
+   - **CLIProxyAPI** running locally (Gemini-compatible proxy)
 2. **Python 3.11+** (for development only)
 
 ### Installation
 
-Option 1: From MCP Registry (Recommended)
-This server is available in the [Model Context Protocol Registry](https://registry.modelcontextprotocol.io/?q=nanobanana). Search for "nanobanana" or use the MCP name below with your MCP client.
+Option 1: Upstream MCP Registry (Gemini direct only)
+The upstream package is listed in the [Model Context Protocol Registry](https://registry.modelcontextprotocol.io/?q=nanobanana).
 
 mcp-name: io.github.zhongweili/nanobanana-mcp-server
 
-Option 2: Using `uvx`
+Option 2: From Source (this fork, recommended for CLIProxyAPI)
 
 ```bash
-uvx nanobanana-mcp-server@latest
+git clone https://github.com/ion-aluminium/nanobanana-mcp-cliproxyapi.git
+cd nanobanana-mcp-cliproxyapi
+uv sync
 ```
 
-Option 3: Using `pip`
+Option 3: Install from Git (this fork)
 
 ```bash
-pip install nanobanana-mcp-server
+pip install git+https://github.com/ion-aluminium/nanobanana-mcp-cliproxyapi.git
 ```
 
 ## 🔧 Configuration
 
 ### Authentication Methods
 
-Nano Banana supports two authentication methods via `NANOBANANA_AUTH_METHOD`:
+Nano Banana supports these authentication options:
 
 1. **API Key** (`api_key`): Uses `GEMINI_API_KEY`. Best for local development and simple deployments.
 2. **Vertex AI ADC** (`vertex_ai`): Uses Google Cloud Application Default Credentials. Best for production on Google Cloud (Cloud Run, GKE, GCE).
 3. **Automatic** (`auto`): Defaults to API Key if present, otherwise tries Vertex AI.
+4. **CLIProxyAPI**: Set `CLIPROXY_BASE_URL` to route requests through a local Gemini-compatible proxy (bypasses Google SDK auth).
 
 #### 1. API Key Authentication (Default)
 Set `GEMINI_API_KEY` environment variable.
@@ -234,6 +244,21 @@ uvx nanobanana-mcp-server@latest
 # Or with pip installation
 python -m nanobanana_mcp_server.server
 ```
+
+### CLIProxyAPI Mode (Gemini-Compatible Proxy) ⭐ NEW
+
+Set the following environment variables and run as usual:
+
+```bash
+export CLIPROXY_BASE_URL="http://127.0.0.1:8318"
+export CLIPROXY_API_KEY="sk-your-cli-proxy-key"
+export NANOBANANA_MODEL="pro"
+export NO_PROXY="127.0.0.1,localhost"
+
+uv run python -m nanobanana_mcp_server.server
+```
+
+See the full guide in [docs/CLIPROXYAPI.md](docs/CLIPROXYAPI.md).
 
 ## 🤖 Model Selection
 
@@ -424,8 +449,8 @@ For local development:
 
 ```bash
 # Clone repository
-git clone https://github.com/zhongweili/nanobanana-mcp-server.git
-cd nanobanana-mcp-server
+git clone https://github.com/ion-aluminium/nanobanana-mcp-cliproxyapi.git
+cd nanobanana-mcp-cliproxyapi
 
 # Install with uv
 uv sync
@@ -443,5 +468,6 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🆘 Support
 
-- **Issues**: [GitHub Issues](https://github.com/zhongweili/nanobanana-mcp-server/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/zhongweili/nanobanana-mcp-server/discussions)
+- **Issues**: [GitHub Issues](https://github.com/ion-aluminium/nanobanana-mcp-cliproxyapi/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/ion-aluminium/nanobanana-mcp-cliproxyapi/discussions)
+- **Upstream**: [zhongweili/nanobanana-mcp-server](https://github.com/zhongweili/nanobanana-mcp-server)

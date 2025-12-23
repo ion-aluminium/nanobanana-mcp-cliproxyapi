@@ -4,13 +4,14 @@
 **Status:** Production Ready  
 **Package:** `nanobanana-mcp-server`
 
-A production-ready Model Context Protocol (MCP) server for AI-powered image generation using Google's Gemini 2.5 Flash Image model.
+A production-ready Model Context Protocol (MCP) server for AI-powered image generation using Google's Gemini models, with optional CLIProxyAPI backend support.
 
 ## 📋 Quick Navigation
 
 ### 🚀 Getting Started
 - **[README.md](../README.md)** - Installation and client configuration
 - **[CLAUDE.md](../CLAUDE.md)** - Claude Code development guidance
+- **[CLIProxyAPI Guide](CLIPROXYAPI.md)** - Run the server with a local Gemini-compatible proxy
 
 ### 📚 Core Documentation
 - **[API Specification](API_SPECIFICATION.md)** - Complete API reference
@@ -193,9 +194,9 @@ scripts/
 
 ## 🆘 Support & Resources
 
-- **Issues:** [GitHub Issues](https://github.com/zhongweili/nanobanana-mcp-server/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/zhongweili/nanobanana-mcp-server/discussions)
-- **Package:** [PyPI Package](https://pypi.org/project/nanobanana-mcp-server/)
+- **Issues:** [GitHub Issues](https://github.com/ion-aluminium/nanobanana-mcp-cliproxyapi/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/ion-aluminium/nanobanana-mcp-cliproxyapi/discussions)
+- **Upstream:** [zhongweili/nanobanana-mcp-server](https://github.com/zhongweili/nanobanana-mcp-server)
 
 ---
 

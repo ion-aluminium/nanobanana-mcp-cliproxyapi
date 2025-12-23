@@ -2,13 +2,14 @@
 
 ## 🎯 Project Summary
 
-**Nano Banana MCP Server** is a production-ready Model Context Protocol (MCP) server that brings AI-powered image generation capabilities to any MCP-compatible client through Google's Gemini 2.5 Flash Image model.
+**Nano Banana MCP Server** is a production-ready Model Context Protocol (MCP) server that brings AI-powered image generation capabilities to any MCP-compatible client through Google's Gemini models, with optional CLIProxyAPI backend support.
 
 ### Key Value Propositions
 - **Universal Integration** - Works with Claude Desktop, Claude Code, Cursor, Continue.dev, and any MCP client
 - **Zero-Configuration** - Simple `uvx` installation with smart defaults
 - **Production-Ready** - Comprehensive error handling, logging, and validation
 - **Professional Templates** - Pre-built prompt templates for photography, design, and editing
+- **Flexible Backends** - Direct Gemini API or local CLIProxyAPI
 
 ## 🏗️ Architecture Overview
 
@@ -37,7 +38,7 @@ graph TB
     Resources --> ImageRes[Stored Images]
     Resources --> Templates[Template Catalog]
     
-    Gemini --> API[Google Gemini API<br/>2.5 Flash Image]
+    Gemini --> API[Google Gemini API<br/>or CLIProxyAPI]
 ```
 
 ### Package Architecture
@@ -52,7 +53,7 @@ graph TB
 | Component | Technology | Version | Purpose |
 |-----------|------------|---------|---------|
 | **MCP Framework** | FastMCP | ≥2.11.0 | Server foundation and protocol handling |
-| **AI Integration** | Google GenAI | ≥0.3.0 | Gemini 2.5 Flash Image API |
+| **AI Integration** | Google GenAI | ≥0.3.0 | Gemini API (direct) or CLIProxyAPI (proxy) |
 | **Image Processing** | Pillow | ≥10.4.0 | Image manipulation and optimization |
 | **Validation** | Pydantic | ≥2.0.0 | Data validation and serialization |
 | **Package Management** | uv | Latest | Modern Python tooling |
@@ -156,7 +157,7 @@ graph LR
 ## 🛠️ Development Workflow
 
 ### Development Environment
-1. **Clone Repository** - `git clone https://github.com/zhongweili/nanobanana-mcp-server.git`
+1. **Clone Repository** - `git clone https://github.com/ion-aluminium/nanobanana-mcp-cliproxyapi.git`
 2. **Install Dependencies** - `uv sync`
 3. **Environment Setup** - Copy `.env.example` and add API key
 4. **Local Development** - `uv run python -m nanobanana_mcp_server.server`

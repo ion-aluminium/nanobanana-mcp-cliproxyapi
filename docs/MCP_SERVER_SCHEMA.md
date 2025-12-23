@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Nano Banana MCP Server is a production-ready FastMCP server that provides AI-powered image generation and editing capabilities through Google's Gemini 2.5 Flash Image model. This document provides the complete schema specification for all MCP components.
+The Nano Banana MCP Server is a production-ready FastMCP server that provides AI-powered image generation and editing capabilities through Google's Gemini models, with optional CLIProxyAPI backend support. This document provides the complete schema specification for all MCP components.
 
 ## Server Configuration
 
@@ -11,7 +11,7 @@ The Nano Banana MCP Server is a production-ready FastMCP server that provides AI
 {
   "name": "nanobanana-mcp-server",
   "version": "1.0.0",
-  "description": "Image generation & editing powered by Gemini 2.5 Flash Image",
+  "description": "Image generation & editing powered by Gemini image models",
   "transport": "stdio|http",
   "entry_point": "server:create_app"
 }
@@ -19,8 +19,12 @@ The Nano Banana MCP Server is a production-ready FastMCP server that provides AI
 
 ### Environment Configuration
 ```bash
-# Required
+# Required (choose one)
 GEMINI_API_KEY=your_api_key_here
+# or
+CLIPROXY_BASE_URL=http://127.0.0.1:8318
+# CLIPROXY_API_KEY=sk-your-cli-proxy-key
+# CLIPROXY_CONFIG=/path/to/cliproxyapi/config.yaml
 
 # Optional
 LOG_LEVEL=INFO|DEBUG|WARNING|ERROR
@@ -44,7 +48,7 @@ IMAGE_OUTPUT_DIR=output
 interface GenerateImageTool {
   name: "generate_image";
   annotations: {
-    title: "Generate or edit images (Gemini 2.5 Flash Image)";
+    title: "Generate or edit images (Gemini image models)";
     readOnlyHint: true;
     openWorldHint: true;
   };
