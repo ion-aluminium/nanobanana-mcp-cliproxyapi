@@ -2,9 +2,8 @@
 
 A production-ready **Model Context Protocol (MCP)** server that provides AI-powered image generation capabilities through Google's **Gemini** models with intelligent model selection.
 
-> Fork notice: This repository is a fork of `zhongweili/nanobanana-mcp-server`.
-> It adds **CLIProxyAPI** backend support (Gemini-compatible proxy) while keeping
-> the same MCP tools and MIT license.
+> Downstream fork of `zhongweili/nanobanana-mcp-server`: https://github.com/zhongweili/nanobanana-mcp-server  
+> Updates in this fork: **CLIProxyAPI** backend support (Gemini-compatible proxy), updated docs/config examples.
 
 ## ⭐ NEW: Gemini 3 Pro Image Support! 🚀
 
